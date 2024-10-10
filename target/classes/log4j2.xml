@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configuration>
+
+<Configuration status="error" name="panorama-superset-batch" packages="">
+
+    <properties>
+        <property name="filename">panorama-superset-batch</property>
+        <property name="logpattern">
+            %d{yyyyMMdd HH:mm:ss.SSS} [%t] %-5level %logger{36}:%L - %msg%n
+        </property>
+    </properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${logpattern}" />
+        </Console>
+        <!--
+             esempio con la data
+                filePattern="${sys:catalina.home}/logs/${filename}-%d{yyyyMMdd}-%i.log.gz"
+        -->
+         
+<!--        <File name="LogFile" fileName="${sys:catalina.home}/logs/${filename}.log"><PatternLayout pattern="${logpattern}" /> </File>  -->
+        <RollingFile name="RollingFile"
+            fileName="${filename}.log"
+            filePattern="${filename}-%i.log.gz">
+            <PatternLayout pattern="${logpattern}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="off">
+            <AppenderRef ref="Console" />
+        </Root>
+
+        <Logger name="com.ateikon" level="info" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+        
+        <!--  
+            Per eseguire il log degli SQL di MyBatis occorre indicare il namespace  
+            -->
+
+        <!--  
+        <Logger name="org.springframework.security" level="trace" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Logger name="org.springframework.web" level="trace" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>  
+        <Logger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>  
+        <Logger name="org.hibernate" level="trace" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>       
+        -->
+        
+     </Loggers>
+</Configuration>
